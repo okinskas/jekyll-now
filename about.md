@@ -4,12 +4,15 @@ title: About
 permalink: /about/
 ---
 
-Some information about you!
+I'm Ovi, an aspiring software developer with interests in mathematics, algorithms, automation and finance.
+I enjoy backend work involving REST APIs and seeing entire systems come together.
 
-### More Information
+### Aside
 
-A place to include any other types of information that you'd like to include about yourself.
+I study online courses in programming, finance and mathematics.
+I read self-help literature/podcasts and maintain a healthy lifestyle.
 
-### Contact me
+### Want to get in touch?
 
-[email@domain.com](mailto:email@domain.com)
+- [Connect with me on LinkedIn!](linkedin.com/in/ovidijus-okinskas)
+- [Email Me!](mailto:ovidijus.okinskas+github@gmail.com)
