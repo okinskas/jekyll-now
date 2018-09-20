@@ -3,26 +3,14 @@ layout: post
 title: Game Loop
 ---
 
-## What is a game loop? ##
-
-The Game Loop pattern is used when creating games, animations or UIs that need to update state irrespective of user input.
-Using this pattern, you are able to allow the system to update state while handling the rendering separately,
-effectively allowing you to control the user's frame rate in whichever way suits the application.
-
-## Purpose of Example ##
-
-Given a game/animation in which a ball travels and bounces from the boundaries of a box,
-define interchangeable loop sequences that will update the game and display.
-
-![_config.yml]({{ site.baseurl }}/images/gameloop/gameloop.png)
+The Game Loop pattern is used when creating games, animations or UIs that need to update state
+irrespective of user input. This post will discuss the different implementations of game loops based on
+examples found in my example project:
+[Java Design Patterns / game-loop](https://github.com/okinskas/java-design-patterns/tree/game-loop/game-loop).
 
 ## Implementations ##
 
-- Game State = The real state of the game.
-- Render State = The state of the display / render.
-
-This means that game state and render state can be different in some examples and can have positive or negative
-side effects depending on the implementation.
+_Note: Game state is the real state of the game. Render state is the state of the display / render._
 
 ### Basic ###
 
@@ -37,7 +25,7 @@ public void gameLoop() {
 
 The basic loop updates the game state and render state at the same time. This means the game and render states
 are always the same. However, the basic loop is not limited and will simply run as fast as the hardware can handle.
-This is not useful as it means the game/animation will run at different speed depending on the speed of the hardware.
+This is not useful as it means the game/animation will run at different speeds depending on the speed of the hardware.
 
 ### Locked ###
 
@@ -70,18 +58,16 @@ public void gameLoop() {
 ```
 
 The locked loop also updates game state and render state at the same time. To combat the issue of state updates 
-being dependent on hardware speed, a frame-cap is set. This ensures that the loop must wait for a uniform interval
-between updates to ensure a consistent updates of game state and render state.
+being dependent on hardware speed, a frame-cap is set. This ensures that the loop will wait for a uniform interval
+between updates providing consistency across machines.
 
-The issue with this implementation occurs is when slow hardware runs the game/animation. If the hardware cannot
+The issues with this implementation occur on slow hardware. If the hardware cannot
 keep up with the number of updates that need to occur per second to ensure a consistent experience, the loop
-will continue as soon as it can to try to meet the requirement but will cause stutter in game and frame states as
-updates slow down.
+will continue as soon as it can to try to meet the requirement. However, it will cause stutter in game and frame states
+as updates slow down.
 
-Another downside of this implementation is that fast hardware will handle it well, but the hardware's potential
+Another downside of the locked loop is that fast hardware will handle it well, but the hardware's potential
 is being limited.
-
-
 
 ### Capped ###
 
@@ -108,12 +94,12 @@ public void gameLoop() {
 ```
 
 The capped loop is the first of these example to allow separate updates of game state and frame state. In this
-case, a game state update-rate is set to ensure game state is updated consistently. In that sense,
-this implementation attempts to do the same as the locked loop.
+case, a game state update-rate (ticksPerSecond) is set to ensure game state is updated consistently. In that sense,
+this implementation is similar to the locked loop.
 
 In most cases, we can make the assumption that rendering a frame is more intensive than updating game state.
 Given this assumption, this loop ensures that if slow hardware is falling behind the update-rate, the loop
-will prioritise updating game state and stop rendering while it catches up. A 'max-frame-skip' is often implemented
+will prioritise updating game state and stop rendering while it catches up. A 'maxFrameSkip' is often implemented
 to ensure that the game/animation does not just freeze on a single frame if the hardware is struggling to meet
 the update-rate demand.
 
@@ -151,12 +137,15 @@ public void gameLoop() {
 The most powerful loop in these examples is the independent loop. As the name states, this loop allows game state
 and render state to be updated independently of one another. Given the handicap of the previous loop, you may be
 wondering how it is possible to render more frames than there are game states. This loop achieves this via
-interpolation. To do this, the game/animation code must also be changed so it is not completely interchangeable 
-with the others.
+interpolation.
 
 Interpolation produces a value used to understand what the game state would be equivalent to at an exact point
-between two states. With this value the render can predict a state between two real state updates and produce a
-frame that would not actually exist given any real game state.
+between two real states. With the interpolation value, the render can make a prediction and produce a
+frame that would not actually exist given any real game state. As a side effect, the game state logic must be amended
+to take interpolation into consideration meaning this loop is not completely interchangeable.
 
-The source code and working example for this can be found in the following Git Repository:
-[Java Design Patterns / game-loop](https://github.com/okinskas/java-design-patterns/tree/game-loop/game-loop)
+_To dive deeper into this concept, the source code and a working example of each loops can be found
+in the following Git Repository:
+[Java Design Patterns / game-loop](https://github.com/okinskas/java-design-patterns/tree/game-loop/game-loop)._
+
+![_config.yml]({{ site.baseurl }}/images/gameloop/gameloop.png)
