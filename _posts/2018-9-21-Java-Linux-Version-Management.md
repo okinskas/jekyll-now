@@ -16,7 +16,7 @@ I created several key requirements I wanted with this system:
 - I **should not** have to remember overly-verbose syntax to swap versions.
 
 # Java Version Management
-Here is the steps I came up with:
+Here are the steps I came up with:
 
 - Make $JAVA_HOME dynamic.
 - Use 'update-alternatives' to change versions.
@@ -25,7 +25,7 @@ Here is the steps I came up with:
 ## Dynamic Java Home
 
 To create a dynamic $JAVA_HOME variable, I looked at the versions that existed on my machine and how the required
-path was determined. I found that executing `which java` would produce a symlink. Using `readlink $(which java)`
+path was determined. I found that executing `which javac` would produce a symlink. Using `readlink $(which javac)`
 determines where that symlink points. Stepping up two directories from that would produce where $JAVA_HOME should be.
 As an added bonus, the dynamic $JAVA_HOME variable allowed me to set $JRE_HOME dynamically too.
 
@@ -46,19 +46,26 @@ Executing `~$ update-alternatives --config java` displays a list of java paths o
 
 `Press <enter> to keep the current choice[*], or type selection number: `
 
-Given the command would have to be executed for java and javac, both of which would require user input, I wanted
-to speed this up.
+Given the command would have to be executed for java and javac, both of which would require user input, I want
+to speed up this process.
 
 ## Creating Bash Functions
 
-Now the only thing left to do is delegate everything into functions we can easily call. The exact sequence would be:
+Now the only thing left to do was to delegate everything into functions. The exact sequence would be:
 - update-alternatives for java.
 - update-alternatives for javac.
 - source ~/.bashrc to ensure everything $JAVA_HOME and $JRE_HOME are updated.
-- print everything confirm changes have been made.
+- print everything to confirm changes have been made.
 
-The end result looks as follows:
+The end result in my `~/.bashrc` looks as follows:
+
 ```bash
+# Dynamic JAVA_HOME and JRE_HOME
+export JAVA_HOME=$(dirname "$(dirname "$(readlink -f "$(which javac || which java)")")")
+export JRE_HOME=$JAVA_HOME/jre
+
+# Functions
+
 ## Set to Oracle Java 8
 function oracle8() {
 	echo 2 | sudo update-alternatives --config java >/dev/null
@@ -87,7 +94,7 @@ It is worth noting that I have hard-coded the numeric values in update-alternati
 These would need to be adjusted to whatever the environment requires.
 
 I also added `>/dev/null` for the update-alternatives commands to prevent the table and input request being
-displayed to the user.
+displayed to the user. The functions can be refactored further to avoid duplication.
 
 Now if I want to change java versions, I can simply type `oracle8` or `open10` to switch to
 Oracle JDK 1.8 and OpenJDK 10 respectively.
