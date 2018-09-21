@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Java Linux Version Management
+title: Java Version Management on Linux
 ---
 
 I have several Java versions and JDKs installed on my linux machine. With the changes to
