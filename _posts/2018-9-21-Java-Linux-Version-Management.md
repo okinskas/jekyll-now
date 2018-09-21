@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Game Loop
+title: Java Linux Version Management
 ---
 
 I have several Java versions and JDKs installed on my linux machine. With the changes to
