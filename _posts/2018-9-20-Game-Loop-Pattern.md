@@ -5,7 +5,7 @@ title: Game Loop
 
 The Game Loop pattern is used when creating games, animations or UIs that need to update state
 irrespective of user input. This post will discuss the different implementations of game loops based on
-examples found in my example project:
+those found in my example project:
 [Java Design Patterns / game-loop](https://github.com/okinskas/java-design-patterns/tree/game-loop/game-loop).
 
 ## Implementations ##
@@ -63,7 +63,7 @@ between updates providing consistency across machines.
 
 The issues with this implementation occur on slow hardware. If the hardware cannot
 keep up with the number of updates that need to occur per second to ensure a consistent experience, the loop
-will continue as soon as it can to try to meet the requirement. However, it will cause stutter in game and frame states
+will continue as soon as it can to try to meet the requirement. However, it will cause stutter in game and render states
 as updates slow down.
 
 Another downside of the locked loop is that fast hardware will handle it well, but the hardware's potential
@@ -144,7 +144,7 @@ between two real states. With the interpolation value, the render can make a pre
 frame that would not actually exist given any real game state. As a side effect, the game state logic must be amended
 to take interpolation into consideration meaning this loop is not completely interchangeable.
 
-_To dive deeper into this concept, the source code and a working example of each loops can be found
+_To dive deeper into this concept, the source code and a working example of each loop can be found
 in the following Git Repository:
 [Java Design Patterns / game-loop](https://github.com/okinskas/java-design-patterns/tree/game-loop/game-loop)._
 
